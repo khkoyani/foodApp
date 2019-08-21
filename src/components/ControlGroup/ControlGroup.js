@@ -23,7 +23,7 @@ const ControlGroup = (props) => {
                    />
                     )
                 )}
-            <button className={classes.OrderButton} disabled={props.upgradeable}> Checkout</button>
+            <button className={classes.OrderButton} disabled={props.upgradeable} onClick={props.checkoutClick}> Checkout</button>
         </div>
            
     );
