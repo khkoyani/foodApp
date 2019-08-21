@@ -19,9 +19,11 @@ const ControlGroup = (props) => {
                     added={() => props.added(item.type)}
                     removed={() => props.removed(item.type)}
                     disabled={props.disabled[item.type]}
+                    upgradeable={!props.upgradeable}
                    />
                     )
                 )}
+            <button className={classes.OrderButton} disabled={props.upgradeable}> Checkout</button>
         </div>
            
     );

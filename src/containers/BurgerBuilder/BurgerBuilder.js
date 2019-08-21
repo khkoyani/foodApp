@@ -19,11 +19,11 @@ class BurgerBuilder extends Component {
         purchaseable: false
     }
 
-    updatePurchase = () => {
-        const ccIngredients = {...this.state.ingredients}
+    updatePurchase = (ingredients) => {
+        const ccIngredients = {...ingredients}
         let sum=0
         for (let key in ccIngredients) {sum+= ccIngredients[key]}
-        this.setState
+        this.setState({purchaseable: sum<=0})
     }
 
     addIngredientHandler = (type) => { 
@@ -35,7 +35,7 @@ class BurgerBuilder extends Component {
             ingredients: ccIngredients,
             total: this.state.total + prices[type]
         })
-        this.updatePurchase();
+        this.updatePurchase(ccIngredients);
     }
 
     removeIngredientHandler = (type) => { 
@@ -50,7 +50,7 @@ class BurgerBuilder extends Component {
             ingredients: ccIngredients,
             total: this.state.total - prices[type]
         })
-        this.updatePurchase();
+        this.updatePurchase(ccIngredients);
     }
 
     render () {
@@ -65,7 +65,8 @@ class BurgerBuilder extends Component {
                     added={this.addIngredientHandler}
                     removed={this.removeIngredientHandler}
                     disabled={disabledBtns} 
-                    total={this.state.total}> </ControlGroup>
+                    total={this.state.total}
+                    upgradeable={this.state.purchaseable}> </ControlGroup>
                     
                     
             </Aux>
