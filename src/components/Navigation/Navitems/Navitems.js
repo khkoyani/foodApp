@@ -2,12 +2,12 @@ import React from 'react';
 import classes from './Navitems.css'
 
 const Navitems = () => {
-    console.log(classes.Navitems, classes.Navitem)
     return (
-        <nav className={classes.Navitems}>
-            <ul className={classes.Navitem} ><a  href="#" className={classes.active}>Build Burger</a></ul>
+        <div className={classes.Navitems}>
+            <ul className={classes.Navitem} ><a className={classes.active} href="#" >Build Burger</a></ul>
             <ul className={classes.Navitem}><a href="#">Checkout</a></ul>
-            </nav>
+            <ul className={classes.Navitem}><a href="#">Link3</a></ul>
+            </div>
     );
 };
 

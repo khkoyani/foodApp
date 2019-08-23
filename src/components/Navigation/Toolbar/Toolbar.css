@@ -7,6 +7,7 @@
     background-color: #703b09;
     /* 703b09 */
     display: flex;
+    flex-flow: row;
     justify-content: space-between;
     align-items: center;
     padding: 0px 20px;
@@ -19,4 +20,5 @@
     height: 100%;
     
 }
+
 

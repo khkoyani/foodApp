@@ -1,0 +1,17 @@
+.Blankbar {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 70px;
+    width: 100%;
+    display: block;
+    z-index: 105;
+    background-color: #fff;
+}
+
+.Blankbar button {
+    display: block;
+    background-color: brown;
+    color: #fff;
+    padding: 10px 10px;
+}

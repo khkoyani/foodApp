@@ -1,39 +1,92 @@
 .Navitems {
-    margin: 0px;
+    margin: 0px 0px;
     padding: 0px;
     list-style: none;
     display: flex;
+    flex-flow: column;
     align-items: center;
     height: 100%;
+    background-color: #703b09;
 }
 
 .Navitem {
-    margin: 0px;
+    margin: 0;
+    padding: 10px 10px;
     box-sizing: border-box;
-    display: flex;
-    height: 100%;
-    align-items: center;
+    display: block;
+    width: 100%;
+
 }
 
 .Navitem a {
-    color: white;
+    color:white;
     text-decoration: none;
-    height: 100%;
-    padding: 16px 10px;
-    border-bottom: 4px solid transparent;
+    width: 100%;
     box-sizing: border-box;
-    display: block
-}
-
-.Navitem a:hover {
+    display: block;
+    padding: 16px 10px;
 
 }
+
 .Navitem a:active {
-    background-color: #8f5c3c;
-    border-bottom: 4px solid #40a4ca;
+
     color: white;
-    
 }
+
+.Navitem a.active {
+    background-color: #8f5c3c;
+    color: white;
+}
+
 .Navitem a:hover {
-    
+
 }
+.Navitem a.hover {
+}
+
+@media (min-width: 501px) {
+    .Navitems {
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        height: 100%;
+    }
+
+    .Navitem {
+        margin: 0px;
+        padding: 6px;
+        display: flex;
+        height: 100%;
+        width: auto;
+        align-items: center;
+    }
+
+    .Navitem a {
+        color: white;
+        height: 100%;
+        padding: 16px 10px;
+        border-bottom: 4px solid transparent;
+    }
+
+    .Navitem a:hover {
+
+    }
+    .Navitem a:active {
+        background-color: #8f5c3c;
+        border-bottom: 4px solid #40a4ca;
+        color: white;
+    }
+
+    .Navitem a.active {
+        background-color: #8f5c3c;
+        border-bottom: 4px solid #40a4ca;
+        color: white;
+    }
+
+    .Navitem a.hover {
+    }
+}
+
