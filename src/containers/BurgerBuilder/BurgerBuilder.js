@@ -4,7 +4,8 @@ import Aux from '../../hoc/Auxx';
 import Burger from '../../components/Burger/Burger';
 import ControlGroup from '../../components/ControlGroup/ControlGroup';
 import Modal from '../../components/UI/Modal/Modal.js';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary.js'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary.js';
+import Spinner from '../../components/UI/Spinner/Spinner.js'
 
 const prices = {
     salad: .5, bacon: 2, cheese:1, meat: 2
@@ -20,6 +21,7 @@ class BurgerBuilder extends Component {
         total: 6,
         purchaseable: false,
         checkout: false,
+        sendingOrder: false,
     }
     
     closeBackdropHandler = () => {
@@ -27,6 +29,7 @@ class BurgerBuilder extends Component {
     }
 
     continueCheckoutHandler = () => {
+        this.setState({sendingOrder: true})
         const order = {
             ingredients: this.state.ingredients,
             total: this.state.total,
@@ -43,8 +46,16 @@ class BurgerBuilder extends Component {
             deliveryMethod: 'fastest',
         }
         axios.post('/orders.json', order)
-            .then(r => {console.log(r)})
-            .catch(err => {console.log(err)})
+            .then(r =>  {
+                this.setState({
+                    sendingOrder: false,
+                    checkout: false
+                })})
+            .catch(err => {
+                this.setState({
+                    sendingOrder: false,
+                    checkout: false
+                })})
     }
 
     checkoutClickHandler = () => {
@@ -91,6 +102,14 @@ class BurgerBuilder extends Component {
             disabledBtns[key] = this.state.ingredients[key] < 1
         }
 
+        let orderSummary = <OrderSummary ingredients={this.state.ingredients}
+            continue={this.continueCheckoutHandler} 
+            cancel={this.closeBackdropHandler} total={this.state.total}
+            />
+
+        if (this.state.sendingOrder) {
+            orderSummary = <Spinner></Spinner>
+        }
         // let modal=null
         // if (this.state.checkout) {
         //     modal = <Modal><OrderSummary 
@@ -99,12 +118,10 @@ class BurgerBuilder extends Component {
         // } 
         return (
             <Aux>
-                if
+                
                 <Burger ingredients={this.state.ingredients} />
                 <Modal show={this.state.checkout} close={this.closeBackdropHandler}>
-                    <OrderSummary ingredients={this.state.ingredients}
-                        continue={this.continueCheckoutHandler} 
-                        cancel={this.closeBackdropHandler} total={this.state.total}/>
+                   {orderSummary} 
                 </Modal>
                 <ControlGroup 
                     added={this.addIngredientHandler}
