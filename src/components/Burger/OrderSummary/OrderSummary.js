@@ -5,12 +5,13 @@ import Button from '../../UI/Button/Button.js'
 class OrderSummary extends Component {
 
     render () {
-        const ingredients = Object.keys(this.props.ingredients).map((k, v) => (
+        let ingredients = Object.keys(this.props.ingredients).map((k, i, v) => (
             <li key={k}>
-                <span style={{textTransform: 'capitalize'}}>{k}</span>: {v}
+                <span style={{textTransform: 'capitalize'}}>{k}</span>: {this.props.ingredients[k]}
                 </li>
             )    
         )
+        
         return (
             <div>
                 <h3>Your Order</h3>

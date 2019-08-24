@@ -6,9 +6,6 @@ import Aux from '../../../hoc/Auxx.js'
 
 class Modal extends Component {
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('nextprops: ', nextProps)
-        console.log('nextState: ', nextState)
-        console.log('this.props: ', this.props)
         if (nextProps.show !== this.props.show) {
             return true
         } else {
