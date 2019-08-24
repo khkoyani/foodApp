@@ -5,23 +5,33 @@ import Burger from '../../components/Burger/Burger';
 import ControlGroup from '../../components/ControlGroup/ControlGroup';
 import Modal from '../../components/UI/Modal/Modal.js';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary.js';
-import Spinner from '../../components/UI/Spinner/Spinner.js'
+import Spinner from '../../components/UI/Spinner/Spinner.js';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler.js'
 
 const prices = {
     salad: .5, bacon: 2, cheese:1, meat: 2
 }
 class BurgerBuilder extends Component {
     state = {
-        ingredients: {
-            salad: 1,
-            bacon: 1,
-            cheese: 1,
-            meat: 1
-        },
+        ingredients: null,
         total: 6,
         purchaseable: false,
         checkout: false,
         sendingOrder: false,
+        error: false,
+    }
+
+    componentDidMount () {
+        console.log(this.props.error)
+        axios.get('/ingredients')
+            .then(r => {
+                console.log('response----', r)
+                this.setState({ingredients: r.data})
+            })
+            .catch(err => {
+                console.log('error---', err)
+                this.setState({error: true})
+            })
     }
     
     closeBackdropHandler = () => {
@@ -102,39 +112,46 @@ class BurgerBuilder extends Component {
             disabledBtns[key] = this.state.ingredients[key] < 1
         }
 
-        let orderSummary = <OrderSummary ingredients={this.state.ingredients}
-            continue={this.continueCheckoutHandler} 
-            cancel={this.closeBackdropHandler} total={this.state.total}
-            />
+        let orderSummary = null
+        console.log(this.state.error, 'inrender')
+        let burger = <Spinner></Spinner>
 
+
+        if (this.state.ingredients) {
+            burger = (
+                <Aux>
+                    <Burger ingredients={this.state.ingredients} />
+                    <ControlGroup 
+                        added={this.addIngredientHandler}
+                        removed={this.removeIngredientHandler}
+                        disabled={disabledBtns} 
+                        total={this.state.total}
+                        upgradeable={this.state.purchaseable}
+                        checkoutClick={this.checkoutClickHandler}> 
+                    </ControlGroup> 
+                </Aux>
+            )
+            orderSummary = (
+                <OrderSummary ingredients={this.state.ingredients}
+                    continue={this.continueCheckoutHandler} 
+                    cancel={this.closeBackdropHandler} total={this.state.total}>
+                </OrderSummary>
+            )
+        }
         if (this.state.sendingOrder) {
             orderSummary = <Spinner></Spinner>
         }
-        // let modal=null
-        // if (this.state.checkout) {
-        //     modal = <Modal><OrderSummary 
-        //     ingredients={this.state.ingredients}/>
-        //     </Modal>
-        // } 
+        if (this.state.error) {burger = <p>Unable to load ingredients</p>}
+
         return (
             <Aux>
-                
-                <Burger ingredients={this.state.ingredients} />
+                {burger}
                 <Modal show={this.state.checkout} close={this.closeBackdropHandler}>
                    {orderSummary} 
-                </Modal>
-                <ControlGroup 
-                    added={this.addIngredientHandler}
-                    removed={this.removeIngredientHandler}
-                    disabled={disabledBtns} 
-                    total={this.state.total}
-                    upgradeable={this.state.purchaseable}
-                    checkoutClick={this.checkoutClickHandler}> </ControlGroup>
-                    
-                    
+                </Modal>       
             </Aux>
         );
     }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
