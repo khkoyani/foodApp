@@ -7,6 +7,7 @@ import Modal from '../../components/UI/Modal/Modal.js';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary.js';
 import Spinner from '../../components/UI/Spinner/Spinner.js';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler.js'
+import Link from 'react-router-dom'
 
 const prices = {
     salad: .5, bacon: 2, cheese:1, meat: 2
@@ -22,14 +23,12 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount () {
-        console.log(this.props.error)
-        axios.get('/ingredients')
+        console.log(this.props.history)
+        axios.get('/ingredients.json')
             .then(r => {
-                console.log('response----', r)
                 this.setState({ingredients: r.data})
             })
             .catch(err => {
-                console.log('error---', err)
                 this.setState({error: true})
             })
     }
@@ -39,33 +38,17 @@ class BurgerBuilder extends Component {
     }
 
     continueCheckoutHandler = () => {
-        this.setState({sendingOrder: true})
-        const order = {
-            ingredients: this.state.ingredients,
-            total: this.state.total,
-            customer: {
-                name: 'Karan Koyani',
-                address: {
-                    street: '1234 asdfjk;l ln',
-                    zipCode: 12345,
-                    city: 'Charlotte',
-                    state: 'NC'
-                },
-                email: 'asdf@gmail.com'
-            },
-            deliveryMethod: 'fastest',
+        let ingredients = []
+        for (let i in this.state.ingredients) {
+            ingredients.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-        axios.post('/orders.json', order)
-            .then(r =>  {
-                this.setState({
-                    sendingOrder: false,
-                    checkout: false
-                })})
-            .catch(err => {
-                this.setState({
-                    sendingOrder: false,
-                    checkout: false
-                })})
+        ingredients.push('total=' + encodeURIComponent(this.state.total))
+        console.log('ing', ingredients)
+        this.props.history.push({
+            pathname: '/checkout/', 
+            search: '?' + ingredients.join('&')
+        })
+        
     }
 
     checkoutClickHandler = () => {
@@ -113,13 +96,12 @@ class BurgerBuilder extends Component {
         }
 
         let orderSummary = null
-        console.log(this.state.error, 'inrender')
         let burger = <Spinner></Spinner>
 
 
         if (this.state.ingredients) {
             burger = (
-                <Aux>
+                <div style={{marginTop: '60px'}}>
                     <Burger ingredients={this.state.ingredients} />
                     <ControlGroup 
                         added={this.addIngredientHandler}
@@ -129,7 +111,7 @@ class BurgerBuilder extends Component {
                         upgradeable={this.state.purchaseable}
                         checkoutClick={this.checkoutClickHandler}> 
                     </ControlGroup> 
-                </Aux>
+                 </div>
             )
             orderSummary = (
                 <OrderSummary ingredients={this.state.ingredients}

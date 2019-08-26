@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import Modal from '../../components/UI/Modal/Modal.js';
 import Aux from '../Aux';
 // import axios from '../../axios-orders.js'
+import axios from '../../axios-orders'
 
 const withErrorHandler = (WrappedComponent, axios) => {
     return class extends Component {
         state = {
             error: null
         }
-        
 
         UNSAFE_componentWillMount () {
             this.reqInterceptor = axios.interceptors.request.use(r => {
@@ -16,21 +16,21 @@ const withErrorHandler = (WrappedComponent, axios) => {
                 return r
             })
             this.respInterceptor = axios.interceptors.response.use(null, err => {
+                console.log('errrrrrrrrrrr')
                 this.setState({error: err})
             })
         }
 
-        componentWillUnmount() {
-            axios.interceptors.request.eject(this.reqInterceptor)
-            axios.interceptors.response.eject(this.respInterceptor)
-        }
+        // componentWillUnmount() {
+        //     axios.interceptors.request.eject(this.reqInterceptor)
+        //     axios.interceptors.response.eject(this.respInterceptor)
+        // }
         
         closeErrorModalHandler = () => {
             this.setState({error: null})
         }
 
         render() {
-            console.log("inwrapper")
             return (
                 <Aux>
                     <Modal show={this.state.error} close={this.closeErrorModalHandler}>

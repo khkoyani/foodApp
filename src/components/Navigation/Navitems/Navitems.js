@@ -1,12 +1,12 @@
 import React from 'react';
 import classes from './Navitems.css'
+import {NavLink} from 'react-router-dom'
 
 const Navitems = () => {
     return (
         <div className={classes.Navitems}>
-            <ul className={classes.Navitem} ><a className={classes.active} href="#" >Build Burger</a></ul>
-            <ul className={classes.Navitem}><a href="#">Checkout</a></ul>
-            <ul className={classes.Navitem}><a href="#">Link3</a></ul>
+            <NavLink to='/' exact className={classes.NavLink} activeClassName={classes.active}>Build Burger</NavLink>
+            <NavLink to='/orders'  className={classes.NavLink} activeClassName={classes.active}>Orders</NavLink>
             </div>
     );
 };

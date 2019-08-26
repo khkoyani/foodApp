@@ -43,6 +43,29 @@
 }
 .Navitem a.hover {
 }
+/*  */
+.NavLink {
+    display: block;
+    box-sizing: border-box;
+    margin: 4px;
+    padding: 30px;
+    color: white;
+    width: 100%;
+    border-bottom: 4px solid transparent;
+    text-decoration: none;
+}
+
+.NavLink:hover, .NavLink:active, .NavLink.active, .active {
+    background-color: #8f5c3c;
+    color: white;
+}
+
+
+
+
+
+
+
 
 @media (min-width: 501px) {
     .Navitems {
@@ -58,17 +81,32 @@
     .Navitem {
         margin: 0px;
         padding: 6px;
-        display: flex;
-        height: 100%;
-        width: auto;
-        align-items: center;
     }
 
     .Navitem a {
-        color: white;
+
         height: 100%;
         padding: 16px 10px;
+
+    }
+
+    .NavLink {
+        display: inline-flex;
+        box-sizing: border-box;
+        margin: 0px 10px;
+        padding: 16px 16px;
+        height: 100%;
+        width: auto;
+        align-items: center;
         border-bottom: 4px solid transparent;
+        color: white;
+        text-align: center;
+    }
+
+    .NavLink:hover, .NavLink:active, .NavLink.active {
+        background-color: #8f5c3c;
+        border-bottom: 4px solid #40a4ca;
+        color: white;
     }
 
     .Navitem a:hover {
@@ -88,5 +126,6 @@
 
     .Navitem a.hover {
     }
-}
 
+ 
+}
