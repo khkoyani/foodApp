@@ -4,6 +4,7 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactForm from './ContactData/ContactForm'
 import {Route} from 'react-router-dom'
 
+
 class Checkout extends Component {
     // state = {
     //     ingredients: null,
@@ -34,6 +35,7 @@ class Checkout extends Component {
     }
 
     checkoutContinueHandler = () => {
+        console.log('inpush')
         this.props.history.push(this.props.match.path+'/contact')
     }
 
@@ -49,7 +51,7 @@ class Checkout extends Component {
 
                 <Route path={this.props.match.path+'/contact'} 
                 render={(props) => (
-                    <ContactForm ingredients={this.state.ingredients} total={this.state.total} {...props}/>
+                    <ContactForm ingredients={this.state.ingredients} exact total={this.state.total} {...props}/>
                     // pass props to render and distributing so contactform has access to history property to allow for redirect
                     )}/>
             </div>
