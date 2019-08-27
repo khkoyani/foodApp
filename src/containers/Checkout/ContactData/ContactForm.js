@@ -31,7 +31,8 @@ create_OrderFormFields ({elementType='input', type='text', placeholder='', value
                     options: [
                         {value: 'fastest', display: 'Fastest '},
                         {value: 'cheapest', display: 'Cheapest '}]
-                    }
+                    },
+                value: ''
             }
         },  
         sendingOrder: false
@@ -49,15 +50,26 @@ create_OrderFormFields ({elementType='input', type='text', placeholder='', value
     
     submitOrderHandler = (event) => {
         event.preventDefault()
-        console.log('props in submit order', this.props)
+
+        let formData = {}
+        let deliverytype = ''
+        for (let i in this.state.orderForm) {
+            if (i != 'deliveryStyle') {
+                formData[i] = this.state.orderForm[i].value
+            } else {
+                deliverytype = this.state.orderForm[i].value
+            }
+                
+        }
+
 
 
         this.setState({sendingOrder: true})
         const order = {
             ingredients: this.props.ingredients,
             total: this.props.total,
-            customer: this.state.customer,
-            deliveryMethod: 'fastest',
+            customer: formData,
+            deliveryMethod: deliverytype
         }
         axios.post('/orders.json', order)
             .then(r =>  {
@@ -72,41 +84,35 @@ create_OrderFormFields ({elementType='input', type='text', placeholder='', value
     }
 
     inputChangeHandler = (event, field) => {
-
-        ccorderForm = {...this.state.orderForm}
-        ccField = {...ccOrderForm[field]}
-        console.log('ccfe', ccField)
+        const ccorderForm = {...this.state.orderForm};
+        const ccField = {...ccorderForm[field]};
+        ccField.value=event.target.value
+        ccorderForm[field]=ccField
+        
+        this.setState({orderForm: ccorderForm})
 
     }
 
 
 
     render() {
-        console.log(this.state.orderForm)
         let eleArr = []
         for (let i in this.state.orderForm) {
             eleArr.push({id: i, elementType: this.state.orderForm[i].elementType, 
                 elementConfig: this.state.orderForm[i].elementConfig, value: this.state.orderForm[i].value})
         }
-        console.log(eleArr)
-        // console.log('name', this.state.orderForm)
+
         let formEl = eleArr.map(i => (
             <Input key={i.id} name={i.id} value={i.value}
                 inputType={i.elementType} elementConfig={i.elementConfig}
                 changed={(event) => {this.inputChangeHandler(event, i.id)}} />
         ))
 
-{/* <Input inputType={i.elementType} elementConfig={i.elementConfig} value={i.value}/> */}
 
         let form = (
-            <form>
+            <form onSubmit={this.submitOrderHandler}>
                 {formEl}
-{/* 
-            //     <Input type="text" name="name" placeholder="Your Name"/>
-            //     <Input type="text" name="street" placeholder="Street" />
-            //     <Input type="text" name="postal" placeholder="Postal Code" />
-            //     <Input type="email" name="email" placeholder="Your Mail" />
-                <Button btnType="Success" clicked={this.submitOrderHandler}>ORDER</Button> */}
+                <Button btnType="Success">ORDER</Button>
             </form>
         );
 
