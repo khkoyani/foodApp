@@ -2,18 +2,19 @@ import React from 'react';
 import classes from './Input.css'
 
 const Input = (props) => {
-    console.log('inputcomp--', props)
     let inputEl = null
+    const inputClasses = [classes.InputEl]
+    if (!props.isValid && props.edited) {inputClasses.push(classes.Invalid)}
     switch (props.inputType) {
         case ('input'):
-            inputEl = <input className={classes.InputEl} value={props.value} onChange={props.changed} {...props.elementConfig}/>
+            inputEl = <input className={inputClasses.join(' ')} value={props.value} onChange={props.changed} {...props.elementConfig}/>
             break;
         case ('textarea'):
-            inputEl = <textarea className={classes.InputEl} onChange={props.changed}/>
+            inputEl = <textarea className={inputClasses.join(' ')} onChange={props.changed}/>
             break;
         case ('select'):
             inputEl = (
-                <select className={classes.InputEl} value={props.value} onChange={props.changed}>
+                <select className={inputClasses.join(' ')} value={props.value} onChange={props.changed}>
                     {props.elementConfig.options.map(i => (
                         <option key={i.value} value={i.value}>{i.display}</option>
                     ))}
@@ -21,7 +22,7 @@ const Input = (props) => {
             )
             break;
         default:
-            inputEl = <input className={classes.InputEl} value={props.value} onChange={props.changed} {...props.elementConfig}/>
+            inputEl = <input className={inputClasses.join(' ')} value={props.value} onChange={props.changed} {...props.elementConfig}/>
             break;
     }
     return (
